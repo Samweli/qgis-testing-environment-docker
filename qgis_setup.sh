@@ -13,7 +13,8 @@
 PLUGIN_NAME=$1
 CONF_FOLDER="/root/.config/QGIS"
 CONF_FILE="${CONF_FOLDER}/QGIS2.conf"
-CONF_MASTER_FILE="/root/.local/share/QGIS/QGIS3/profiles/default/QGIS/QGIS3.ini"
+CONF_MASTER_FOLDER="/root/.local/share/QGIS/QGIS3/profiles/default/QGIS/"
+CONF_MASTER_FILE="${CONF_MASTER_FOLDER}/QGIS3.ini"
 QGIS_FOLDER="/root/.qgis2"
 
 QGIS_MASTER_FOLDER="/root/.local/share/QGIS/QGIS3/profiles/default"
@@ -29,6 +30,9 @@ if [ -e "$CONF_FILE" ]; then
     rm -f $CONF_FILE
 fi
 touch $CONF_FILE
+
+
+mkdir -p $CONF_MASTER_FOLDER
 if [ -e "$CONF_MASTER_FILE" ]; then
     rm -f $CONF_MASTER_FILE
 fi
@@ -67,5 +71,5 @@ if  [ ! -L "${PLUGIN_FOLDER}/${PLUGIN_NAME}" ]; then
 fi
 if [ ! -d "${PLUGIN_MASTER_FOLDER}/${PLUGIN_NAME}" ]; then
     ln -s /tests_directory/${PLUGIN_NAME} ${PLUGIN_MASTER_FOLDER}
-    echo "Plugin folder linked in ${PLUGIN_MASTER_FOLDER}/${PLUGIN_NAME}"
+    echo "Plugin master folder linked in ${PLUGIN_MASTER_FOLDER}/${PLUGIN_NAME}"
 fi
