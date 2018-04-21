@@ -56,7 +56,7 @@ else
         -DWITH_INTERNAL_QWTPOLAR=ON
 fi
 
-make install -j4
+make install -j16
 ldconfig
 
 strip `find /usr/lib/ -name "libqgis*" -type f`
