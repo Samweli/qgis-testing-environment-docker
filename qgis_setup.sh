@@ -64,6 +64,13 @@ if [ -n "$PLUGIN_NAME" ]; then
     printf "${PLUGIN_NAME}=true\n\n" >> $CONF_MASTER_FILE
 fi
 
+# Disable firstRunVersionFlag for master
+printf "\n[migration]\n" >> $CONF_MASTER_FILE
+printf "fileVersion=2\n" >> $CONF_MASTER_FILE
+printf "firstRunVersionFlag=29900\n" >> $CONF_MASTER_FILE
+printf "settings=true\n\n" >> $CONF_MASTER_FILE
+
+
 # Install the plugin
 if  [ ! -L "${PLUGIN_FOLDER}/${PLUGIN_NAME}" ]; then
     ln -s /tests_directory/${PLUGIN_NAME} ${PLUGIN_FOLDER}

@@ -17,8 +17,10 @@ echo $OUTPUT | grep -q FAILED
 IS_FAILED="$?"
 echo $OUTPUT | grep OK | grep -q 'Ran'
 IS_PASSED="$?"
+echo $OUTPUT | grep "QGIS died on signal"
+IS_DEAD="$?"
 echo "Finished running test $1."
-if [ "$IS_PASSED" -eq "0" ] && [ "$IS_FAILED" -eq "1" ]; then
+if [ "$IS_PASSED" -eq "0" ] && [ "$IS_FAILED" -eq "1" ] && [ "$IS_DEAD" -eq "1" ]; then
     exit 0;
 fi
 exit 1
