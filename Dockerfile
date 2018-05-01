@@ -1,14 +1,12 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Alessandro Pasotti <apasotti@boundlessgeo.com>
 
 ################################################################################
-# build arguments: branch, repository and if legacy (Qt4 Py2)
+# build arguments: branch, repository
 
 ARG QGIS_BRANCH=master
 # Note: do not use git but https here!
 ARG QGIS_REPOSITORY=https://github.com/qgis/QGIS.git
-# Set to "true" for Qt4/Py2
-ARG LEGACY=false
 
 
 ################################################################################
@@ -36,10 +34,10 @@ ADD requirements.txt /usr/local/requirements.txt
 COPY scripts /build/scripts
 
 # Install dependencies and git clone the repo and Make it
-RUN /build/scripts/getDeps.sh ${QGIS_BRANCH} ${LEGACY} && \
+RUN /build/scripts/getDeps.sh ${QGIS_BRANCH} && \
    cd /build && \
    git clone --depth 1 -b ${QGIS_BRANCH} ${QGIS_REPOSITORY} && \
-   /build/scripts/make.sh ${QGIS_BRANCH} ${LEGACY}
+   /build/scripts/make.sh ${QGIS_BRANCH}
 
 
 ################################################################################
@@ -59,9 +57,9 @@ ADD supervisor.xvfb.conf /etc/supervisor/supervisor.d/
 # - deb installed
 # - built from git
 # needed to find PyQt wrapper provided by QGIS
-ENV PYTHONPATH=/usr/share/qgis/python/:/usr/lib/python2.7/dist-packages/qgis:/usr/lib/python3/dist-packages/qgis:/usr/share/qgis/python/qgis
+ENV PYTHONPATH=/usr/share/qgis/python/:/usr/lib/python3/dist-packages/qgis:/usr/share/qgis/python/qgis
 
 # Remove some unnecessary files
-RUN /build/scripts/clean.sh ${QGIS_BRANCH} ${LEGACY}
+RUN /build/scripts/clean.sh ${QGIS_BRANCH}
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
