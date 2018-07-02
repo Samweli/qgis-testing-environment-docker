@@ -21,7 +21,8 @@ LC_ALL=C DEBIAN_FRONTEND=noninteractive  \
     python3-pyqt5.qtsql python3-psycopg2 lighttpd locales pkg-config poppler-utils python3-dev \
     python3-pyqt5 pyqt5.qsci-dev python3-pyqt5.qtsql spawn-fcgi xauth xfonts-100dpi \
     xfonts-75dpi xfonts-base xfonts-scalable xvfb vim supervisor expect python3-setuptools \
-    python3-dev python3-owslib libzip-dev python3-pip python3-dev
+    python3-dev python3-owslib libzip-dev python3-pip python3-dev \
+    libqt5serialport5 libqt5serialport5-dev
 
 
     pip3 install -r /usr/local/requirements.txt
