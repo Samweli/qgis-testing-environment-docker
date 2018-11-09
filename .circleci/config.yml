@@ -36,9 +36,9 @@ jobs:
       - run:
           name: "Deploy Docker image"
           command: |
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
             if [ "${QGIS_TAG}" == "master" ]; then
               echo "Pushing latest ..."
               docker push elpaso/qgis-testing-environment:latest
             fi
-            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
             docker push elpaso/qgis-testing-environment:${QGIS_TAG}
