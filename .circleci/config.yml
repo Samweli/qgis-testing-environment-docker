@@ -14,6 +14,7 @@ jobs:
       - run:
           name: "Setup Environment Variables"
           command: |
+            docker pull circleci/buildpack-deps:bionic
             docker tag circleci/buildpack-deps:bionic elpaso/buildpack-deps:bionic
             docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
             docker push elpaso/buildpack-deps:bionic            
