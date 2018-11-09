@@ -9,17 +9,25 @@ jobs:
 
     steps:
       - checkout
-      - run  >
-         docker build  -t elpaso/qgis-testing-environment:${TAG}
-        --build-arg QGIS_REPOSITORY=$REPO
-        --build-arg QGIS_BRANCH=$BRANCH
-        --build-arg CPU_CORES=2
-        .
-      - run: |
-        docker tag elpaso/qgis-testing-environment:${TAG} elpaso/qgis-testing-environment:latest
-      - run: |
-        if [ "${TAG}" == "master" ]; then
-          docker push elpaso/qgis-testing-environment:latest
-        fi
-        docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-        docker push elpaso/qgis-testing-environment:${TAG}
+      - run:
+        name: "Build the Docker image"
+        command: >
+          docker build  -t elpaso/qgis-testing-environment:${TAG}
+          --build-arg QGIS_REPOSITORY=$REPO
+          --build-arg QGIS_BRANCH=$BRANCH
+          --build-arg CPU_CORES=2
+          .
+
+      - run:
+        name: "Tag Docker image"
+        command: |
+          docker tag elpaso/qgis-testing-environment:${TAG} elpaso/qgis-testing-environment:latest
+
+      - run:
+        name: "Deploy Docker image"
+        command: |
+          if [ "${TAG}" == "master" ]; then
+            docker push elpaso/qgis-testing-environment:latest
+          fi
+          docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+          docker push elpaso/qgis-testing-environment:${TAG}
