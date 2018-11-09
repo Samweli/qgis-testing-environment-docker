@@ -21,8 +21,8 @@ jobs:
 
       - run:
           command: |
-          echo "Docker TAG: ${QGIS_TAG}"
-          
+            echo "Docker TAG: ${QGIS_TAG}"
+
       - run:
           name: "Build the Docker image"
           command: >
