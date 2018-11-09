@@ -3,8 +3,8 @@ jobs:
   build:
     machine: true
     environment:
-      QGIS_REPOSITORY: https://github.com/qgis/QGIS.git
-      QGIS_BRANCH: master
+      REPO: https://github.com/qgis/QGIS.git
+      BRANCH: master
       TAG: master
 
     steps:
