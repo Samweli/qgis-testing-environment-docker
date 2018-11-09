@@ -14,7 +14,7 @@ jobs:
       - run:
           name: "Setup Environment Variables"
           command: |
-            docker tag elpaso/buildpack-deps:bionic circleci/buildpack-deps:bionic
+            docker tag circleci/buildpack-deps:bionic elpaso/buildpack-deps:bionic
             docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
             docker push elpaso/buildpack-deps:bionic            
             echo 'export QGIS_REPOSITORY="${QGIS_REPOSITORY:-https://github.com/qgis/QGIS.git}"' >> $BASH_ENV
