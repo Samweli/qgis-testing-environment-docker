@@ -5,10 +5,10 @@
 set -e
 
 # Keep python dev and other libs we need to build psutils for reporting plugin
-dpkg --purge `dpkg -l "*-dev" | egrep -v 'libexpat|python' | sed -ne 's/ii  \(.*-dev\(:amd64\)\?\) .*/\1/p'` || true
+dpkg --purge `dpkg -l "*-dev" | grep ii | egrep -v 'libexpat|python' | sed -ne 's/ii  \(.*-dev\(:amd64\)\?\) .*/\1/p'` || true
 
 # Clean for master (Py3/Qt5)
-apt-get remove -y libqt4* libgtk* libsane gfortran-5 *gnome* \
+LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get remove -y libqt4* libgtk* libsane gfortran-5 *gnome* \
     libsane *pango* glib* *gphoto*
 
 apt-get clean

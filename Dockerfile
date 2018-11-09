@@ -1,26 +1,13 @@
-FROM ubuntu:18.04
-MAINTAINER Alessandro Pasotti <apasotti@boundlessgeo.com>
+FROM qgis/qgis3-build-deps:latest
+MAINTAINER Alessandro Pasotti <elpaso@itopen.it>
 
 ################################################################################
-# build arguments: branch, repository
+# build arguments: branch, repository, number of cores for -j build argument
 
 ARG QGIS_BRANCH=master
 # Note: do not use git but https here!
 ARG QGIS_REPOSITORY=https://github.com/qgis/QGIS.git
-
-
-################################################################################
-# apt-catcher-ng caching:
-
-# Use local cached debs from host to save your bandwidth and speed thing up.
-# APT_CATCHER_IP can be changed passing an argument to the build script:
-# --build-arg APT_CATCHER_IP=xxx.xxx.xxx.xxx,
-# set the IP to that of your apt-cacher-ng host or comment the following 2 lines
-# out if you do not want to use caching
-ARG APT_CATCHER_IP
-RUN  if [ "${APT_CATCHER_IP}" != "" ]; then \
-        echo 'Acquire::http { Proxy "http://'${APT_CATCHER_IP}':3142"; };' >> /etc/apt/apt.conf.d/01proxy; \
-     fi
+ARG CPU_CORES=2
 
 
 ################################################################################
@@ -29,28 +16,30 @@ RUN  if [ "${APT_CATCHER_IP}" != "" ]; then \
 # Add install script for testing environment python packages
 # This is not directly related to QGIS build but the installation
 # will be handled by getDeps script
-ADD requirements.txt /usr/local/requirements.txt
+ADD resources/requirements.txt /usr/local/requirements.txt
 
 COPY scripts /build/scripts
 
 # Install dependencies and git clone the repo and Make it
-RUN /build/scripts/getDeps.sh ${QGIS_BRANCH} && \
-   cd /build && \
-   git clone --depth 1 -b ${QGIS_BRANCH} ${QGIS_REPOSITORY} && \
-   /build/scripts/make.sh ${QGIS_BRANCH}
+RUN /build/scripts/getDeps.sh \
+   && echo "Cloning ${QGIS_BRANCH} from ${QGIS_REPOSITORY} ..." \
+   && cd /build \
+   && git clone --depth 1 -b ${QGIS_BRANCH} ${QGIS_REPOSITORY} \
+   && /build/scripts/make.sh ${CPU_CORES}
 
 
 ################################################################################
 # Testing environment setup
 
 # Add QGIS test runner
-ADD qgis_*.* /usr/bin/
+ADD resources/test_runner/qgis_*.* /usr/bin/
 
+# Make all scripts executable
 RUN chmod +x /usr/bin/qgis_*
 
-# Add service configuration script
-ADD supervisord.conf /etc/supervisor/
-ADD supervisor.xvfb.conf /etc/supervisor/supervisor.d/
+# Add supervisor service configuration script
+ADD resources/supervisor/supervisord.conf /etc/supervisor/
+ADD resources/supervisor/supervisor.xvfb.conf /etc/supervisor/supervisor.d/
 
 # This paths are for
 # - kartoza images (compiled)
@@ -62,4 +51,5 @@ ENV PYTHONPATH=/usr/share/qgis/python/:/usr/lib/python3/dist-packages/qgis:/usr/
 # Remove some unnecessary files
 RUN /build/scripts/clean.sh ${QGIS_BRANCH}
 
+# Run supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

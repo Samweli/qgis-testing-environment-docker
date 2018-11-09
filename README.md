@@ -20,11 +20,21 @@ You can build the image with:
 ```
 $ docker build -t qgis-testing-environment \
     --build-arg QGIS_REPOSITORY='https://github.com/qgis/QGIS.git' \
-    --build-arg QGIS_BRANCH='master' .
+    --build-arg QGIS_BRANCH='master' \
+    .
 ```
 
 Optional APT CATCHER support can be activated by uncommenting a few lines in the
 docker file (see the comments in `Dockerfile`).
+
+# Docker arguments
+
+|Arg  | Default  |
+|---|---|
+|QGIS_REPOSITORY   |https://github.com/qgis/QGIS.git |
+|QGIS_BRANCH  | master|
+|CPU_CORES | 2|
+
 
 # Building with Vagrant
 
