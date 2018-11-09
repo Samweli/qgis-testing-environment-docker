@@ -20,6 +20,10 @@ jobs:
             echo 'export CPU_CORES="${CPU_CORES:-2}"' >> $BASH_ENV
 
       - run:
+          command: |
+          echo "Docker TAG: ${QGIS_TAG}"
+          
+      - run:
           name: "Build the Docker image"
           command: >
             docker build  -t elpaso/qgis-testing-environment:${QGIS_TAG}
