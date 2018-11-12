@@ -4,10 +4,12 @@ set -e
 
 pip3 install -r /usr/local/requirements.txt
 
+apt-get -y update
+
 # Add OpenCL develompent files and supervisor
 LC_ALL=C DEBIAN_FRONTEND=noninteractive  \
     apt-get install -y opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev \
-    supervisor expect
+    supervisor expect vim
 
 
 #chmod -R a+w /usr/lib/x86_64-linux-gnu/qt5/plugins/designer/
