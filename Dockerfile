@@ -4,7 +4,7 @@ MAINTAINER Alessandro Pasotti <apasotti@boundlessgeo.com>
 ################################################################################
 # build arguments: branch, repository
 
-ARG QGIS_BRANCH=master
+ARG QGIS_BRANCH=release-3_0
 # Note: do not use git but https here!
 ARG QGIS_REPOSITORY=https://github.com/qgis/QGIS.git
 
@@ -34,9 +34,11 @@ ADD requirements.txt /usr/local/requirements.txt
 COPY scripts /build/scripts
 
 # Install dependencies and git clone the repo and Make it
+
+# COPY scripts/QGIS /build/QGIS
+
 RUN /build/scripts/getDeps.sh ${QGIS_BRANCH} && \
    cd /build && \
-   git clone --depth 1 -b ${QGIS_BRANCH} ${QGIS_REPOSITORY} && \
    /build/scripts/make.sh ${QGIS_BRANCH}
 
 
