@@ -4,7 +4,7 @@ MAINTAINER Alessandro Pasotti <apasotti@boundlessgeo.com>
 ################################################################################
 # build arguments: branch, repository
 
-ARG QGIS_BRANCH=release-3_0
+ARG QGIS_BRANCH=release-3_4
 # Note: do not use git but https here!
 ARG QGIS_REPOSITORY=https://github.com/qgis/QGIS.git
 
